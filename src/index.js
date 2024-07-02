@@ -7,6 +7,9 @@ const StartBookingService=()=>{
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({extended:true}));
 
+      const appRoutes=require('./routes/index.js');
+      app.use('/api', appRoutes);
+
       app.listen(PORT,()=>{
           console.log(`App is running on port no ${PORT}`);
       })
