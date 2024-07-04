@@ -10,7 +10,11 @@ const StartBookingService=()=>{
       const appRoutes=require('./routes/index.js');
       app.use('/api', appRoutes);
 
-      app.listen(PORT,()=>{
+      const BookingRepository=require('./repository/booking-repository.js');
+      const repo=new BookingRepository();
+
+     
+      app.listen(PORT,async()=>{
           console.log(`App is running on port no ${PORT}`);
       })
 }
