@@ -9,23 +9,25 @@ module.exports = {
      * Example:
      * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
      */
+
     await queryInterface.addColumn(
-       'Bookings', 
-       'price',
-       {
-          type: Sequelize.INTEGER,
-          allowNull: true,
-       }
-      );
+      'Bookings', 
+      'price',
+      { 
+        type: Sequelize.INTEGER,
+        allowNull:false,
+        defaultValue:1
+      });
 
       await queryInterface.addColumn(
-        'Bookings',
-        'noOfSeats',
-        {
-           type: Sequelize.INTEGER,
-           allowNull: true,
-        },
-       );
+        'Bookings', 
+        'totalSeat',
+        { 
+          type: Sequelize.INTEGER,
+          allowNull:false,
+          defaultValue:1
+        });
+
   },
 
   async down (queryInterface, Sequelize) {
@@ -36,8 +38,7 @@ module.exports = {
      * await queryInterface.dropTable('users');
      */
 
-    await queryInterface.dropTable('Bookings','price');
-    await queryInterface.dropTable('Bookings','noOfSeats');
-
+    await queryInterface.removeColumn('Booking','price');
+    await queryInterface.removeColumn('Booking','totalSeat');
   }
 };

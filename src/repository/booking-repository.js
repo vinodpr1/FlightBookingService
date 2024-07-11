@@ -6,20 +6,25 @@ class BookingRepository{
    
     async createBooking(data){
         try {
-                                       
-              const fligtData=await axios.get(`${FLIGHT_SERVICE_URL}/${data.flightId}`);
-             
-              const price=fligtData.data.data.price;
-              const availableSeat=fligtData.data.data.totalSeats;
-              if(availableSeat<data.noOfSeats){
-                console.log('seats are not sufficient');
-                throw {error}
-              }
-              const response=await Booking.create({...data,price:(price*data.noOfSeats)});
               
-            //   const x=await axios.patch(`${FLIGHT_SERVICE_URL}/${data.flightId}`,{...fligtData,totalSeats:totalSeats-data.noOfSeats});
+              const flightId=data.flightId;
+              const flightDataURL=`${FLIGHT_SERVICE_URL}/api/v1/flight/${flightId}`
+              const response=await axios.get(flightDataURL);
+              const flightData=response.data.data;
+              if(flightData.totalSeats<data.totalSeats){
+                 console.log('Booking can not be compleeted bacause of un-sufficient seats');
+                 throw {error}
+              }
+              let priceOfFlight=flightData.price;
+              let totalPrice=data.totalSeats*priceOfFlight;
+              
+              const updateFlightRequestURL=`${FLIGHT_SERVICE_URL}/api/v1/flight/${flightId}`
+              await axios.patch(updateFlightRequestURL ,{totalSeats : flightData.totalSeats-data.totalSeats} );
+              
 
-              return response;
+              let bookingPayload={...data,price:totalPrice,status:'Booked',totalSeat:data.totalSeats};
+              const booking=await Booking.create(bookingPayload);
+              return booking;
 
         } catch (error) {
              console.log('Booking can not be compleeted');
