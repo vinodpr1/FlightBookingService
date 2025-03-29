@@ -7,13 +7,13 @@ const StartBookingService=()=>{
       app.use(bodyParser.json());
       app.use(bodyParser.urlencoded({extended:true}));
 
-      const appRoutes=require('./routes/index.js');
-      app.use('/api', appRoutes);
-
+      app.get("/",(req, res)=>{
+        res.status(200).json({Health:"Book flight endpoints"});
+      })
     
-     
-      app.listen(PORT,async()=>{
-          console.log(`App is running on port no ${PORT}`);
+    
+      app.listen(3300,async()=>{
+          console.log("Book Flight 3300");
       })
 }
 
